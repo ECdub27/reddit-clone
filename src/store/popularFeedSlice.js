@@ -27,13 +27,17 @@ const popularFeedSlice = createSlice({
 
 });
 
+export default popularFeedSlice.reducer;
 export const {startGetPopularFeed, getPopularFeedSuccess , failedPopularFeed} = popularFeed.reducer;
 // redux thunk to dispatch actions
 export const fetchPopularFeed = async (dispatch) =>{
 try {
    dispatch(startGetPopularFeed);
    const redditFeed = await getPopularFeedSuccess;
+   if(redditFeed){
    dispatch(getPopularFeedSuccess(popularFeed))
+   }
+   console.log(redditFeed && dispatch(getPopularFeedSuccess))
 } catch (error) {
  dispatch(failedPopularFeed);   
 }

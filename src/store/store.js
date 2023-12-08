@@ -5,6 +5,6 @@ import {redditSlice} from './redditSlice';
 export default configureStore({
     reducer: combineReducers({
         popularFeedSlice,
-        redditSlice,
+        redditSlice
     })
-})
+});

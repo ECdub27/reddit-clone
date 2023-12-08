@@ -1,5 +1,7 @@
 import { getSubRedditPost, getSubreddit, getComments } from "../api/api";
 import { createSlice , createSelector} from "@reduxjs/toolkit";     
+
+
 const initialState = {
     posts :[],
     isLoading: false,
@@ -101,4 +103,17 @@ export const fetchComments = (permalink, index) => async (dispatch) =>{
 const selectPosts = (state) => state.reddit.posts;
 const selectSearchTerm = (state) => state.reddit.setSearchTerm;
 
-export const selectSearchTerm = (state) => state.reddit.selectedReddit;
+export const selectSelectedSubreddit = (state) => state.reddit.selectedReddit;
+
+export const selectFilteredPost = createSelector(
+  [selectPosts, selectSearchTerm],
+  (posts, searchTerm) =>{
+    if (searchTerm != ''){
+      return posts.filter((post) => 
+      post.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+    }
+    return posts;
+  }
+);
