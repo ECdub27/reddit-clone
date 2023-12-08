@@ -1,4 +1,4 @@
-import { getSubRedditPost, getComments } from "../api/api";
+import { getSubRedditPost, getSubreddit, getComments } from "../api/api";
 import { createSlice , createSelector} from "@reduxjs/toolkit";     
 const initialState = {
     posts :[],
@@ -8,13 +8,13 @@ const initialState = {
     selectedReddit: 'r/premierleague'
 }
 const redditSlice = createSlice({
-  name: 'Reddit Post',
+  name: 'redditPosts',
   initialState,
   reducers: {
    setPosts(state,action){
     state.posts = action.payload;
    },
-   startGetPosts(state,action){
+   startGetPosts(state){
     state.isLoading = true;
     state.error = false;
 
@@ -24,17 +24,17 @@ const redditSlice = createSlice({
     state.error = false;
     state.posts = action.payload;
    },
-   getPostFailure(state,action){
+   getPostFailure(state){
     state.isLoading = false;
     state.error = true;
 
    },
    setSearchTerm(state,action){
-    state.SearchTerm = action.payload;
+    state.setSearchTerm = action.payload;
 
    },
-   setSelectedSearchTerm(state,action){
-    state.SearchTerm = '';
+   setSelectedSubreddit(state,action){
+    state.setSearchTerm = '';
     state.selectedReddit = action.payload;
    },
    toggleShowComment(state,action){
@@ -42,11 +42,11 @@ const redditSlice = createSlice({
    },
    // if we are toggling comments dont fetch comments
    startGetComments(state,action){
-    state.posts[action.payload].toggleShowComment = !state.post[action.payload].toggleShowComment
-    if(!state.post[action.payload.toggleShowComment]){
+    state.posts[action.payload].toggleShowComment = !state.posts[action.payload].toggleShowComment
+    if(!state.posts[action.payload.toggleShowComment]){
         return;
     } state.posts[action.payload].loadingComments = true;
-       state.post[action.payload].error = false;
+       state.posts[action.payload].error = false;
 },
   getCommentsSuccess(state,action){
     state.posts[action.payload.index].loadingComments = true;
@@ -67,10 +67,12 @@ startGetComments,
 getCommentsSuccess,
 getCommentsFailure} = redditSlice.actions;
 
-export const fetchRedditPost= (subreddits) = async (dispatch) =>{
+export default redditSlice.reducer;
+
+export const fetchRedditPost = (subreddit) => async (dispatch) =>{
     try {
         dispatch(startGetPosts);
-        const posts = await getSubRedditPost(subreddits);
+        const posts = await getSubRedditPost(subreddit);
         const postsWithMetaData = posts.map((post) => ({
             ...posts,
             showingComments: false,
@@ -78,9 +80,25 @@ export const fetchRedditPost= (subreddits) = async (dispatch) =>{
             loadingComments: false,
             errorComments: false,
         }));
-        dispatch(getCommentsSuccess)
+        dispatch(getPostFailure())
 
     } catch (error) {
         dispatch(getPostFailure());
     }
 };
+
+export const fetchComments = (permalink, index) => async (dispatch) =>{
+  try {
+    dispatch(startGetComments(index));
+    const comments = await getComments(permalink);
+    dispatch(getCommentsSuccess({index, comments}));
+
+  } catch (error) {
+    dispatch(getCommentsFailure());
+  }
+}
+
+const selectPosts = (state) => state.reddit.posts;
+const selectSearchTerm = (state) => state.reddit.setSearchTerm;
+
+export const selectSearchTerm = (state) => state.reddit.selectedReddit;
