@@ -5,7 +5,7 @@ import DateTimeFieldValue from "../../Util/date";
 
 
 
-const comments = (props) =>{
+const Comments = (props) =>{
 
     
  const {comment} = props;
