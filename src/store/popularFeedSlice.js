@@ -27,8 +27,9 @@ const popularFeedSlice = createSlice({
 
 });
 
+
+export const {startGetPopularFeed, getPopularFeedSuccess , failedPopularFeed} = popularFeedSlice.actions;
 export default popularFeedSlice.reducer;
-export const {startGetPopularFeed, getPopularFeedSuccess , failedPopularFeed} = popularFeed.reducer;
 // redux thunk to dispatch actions
 export const fetchPopularFeed = async (dispatch) =>{
 try {

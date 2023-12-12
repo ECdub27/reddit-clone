@@ -1,4 +1,4 @@
-import { getSubRedditPost, getSubreddit, getComments } from "../api/api";
+import { getSubRedditPost, getComments } from "../api/api";
 import { createSlice , createSelector} from "@reduxjs/toolkit";     
 
 
@@ -73,7 +73,7 @@ export default redditSlice.reducer;
 
 export const fetchRedditPost = (subreddit) => async (dispatch) =>{
     try {
-        dispatch(startGetPosts);
+        dispatch(startGetPosts());
         const posts = await getSubRedditPost(subreddit);
         const postsWithMetaData = posts.map((post) => ({
             ...posts,
@@ -108,7 +108,7 @@ export const selectSelectedSubreddit = (state) => state.reddit.selectedReddit;
 export const selectFilteredPost = createSelector(
   [selectPosts, selectSearchTerm],
   (posts, searchTerm) =>{
-    if (searchTerm != ''){
+    if (searchTerm !== ''){
       return posts.filter((post) => 
       post.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
