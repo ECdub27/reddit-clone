@@ -1,5 +1,5 @@
 import { getSubRedditPost, getComments } from "../api/api";
-import { createSlice , createSelector} from "@reduxjs/toolkit";     
+import { createSlice , createSelector, createAsyncThunk} from "@reduxjs/toolkit";     
 
 
 const initialState = {
@@ -13,7 +13,7 @@ const redditSlice = createSlice({
   name: 'redditPosts',
   initialState,
   reducers: {
-   setPosts(state,action){
+   setPosts(state,action) {
     state.posts = action.payload;
    },
    startGetPosts(state){
@@ -64,6 +64,7 @@ const redditSlice = createSlice({
 export const {setPosts, startGetPosts, getPostSuccess, getPostFailure,
 setSearchTerm,
 setSelectedSearchTerm,
+setSelectedSubreddit,
 toggleShowComment,
 startGetComments,
 getCommentsSuccess,
@@ -89,7 +90,7 @@ export const fetchRedditPost = (subreddit) => async (dispatch) =>{
     }
 };
 
-export const fetchComments = (permalink, index) => async (dispatch) =>{
+export const fetchComments = createAsyncThunk((permalink, index) => async (dispatch) =>{
   try {
     dispatch(startGetComments(index));
     const comments = await getComments(permalink);
@@ -98,7 +99,7 @@ export const fetchComments = (permalink, index) => async (dispatch) =>{
   } catch (error) {
     dispatch(getCommentsFailure());
   }
-}
+})
 
 const selectPosts = (state) => state.reddit.posts;
 const selectSearchTerm = (state) => state.reddit.setSearchTerm;

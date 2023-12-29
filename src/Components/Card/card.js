@@ -2,10 +2,10 @@ import React from "react";
 import './card.css';
 
 
-const Card = (props) =>{
+const Postcard = (props) =>{
 return  <div className={`card ${props.className}`}>
 {props.children}
 </div>
 };
 
-export default Card;
+export default Postcard;

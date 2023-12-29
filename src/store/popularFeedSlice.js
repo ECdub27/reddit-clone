@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
 import { popularFeed } from '../api/api';
 
 const initialState = {
@@ -6,6 +6,7 @@ const initialState = {
     isLoading: true,
     error: false
 };
+
 
 const popularFeedSlice = createSlice({
     name: 'Popular Feed',
@@ -31,16 +32,20 @@ const popularFeedSlice = createSlice({
 export const {startGetPopularFeed, getPopularFeedSuccess , failedPopularFeed} = popularFeedSlice.actions;
 export default popularFeedSlice.reducer;
 // redux thunk to dispatch actions
-export const fetchPopularFeed = async (dispatch) =>{
+export const fetchPopularFeed = createAsyncThunk('PopularFeed/fetchpopular', async (dispatch) =>{
 try {
-   dispatch(startGetPopularFeed);
-   const redditFeed = await getPopularFeedSuccess;
-   if(redditFeed){
-   dispatch(getPopularFeedSuccess(popularFeed))
-   }
-   console.log(redditFeed && dispatch(getPopularFeedSuccess))
-} catch (error) {
- dispatch(failedPopularFeed);   
+dispatch(startGetPopularFeed);
+const redditFeed = await getPopularFeedSuccess;
+if(redditFeed){
+    dispatch(getPopularFeedSuccess);
 }
-};
+} catch (error){
+dispatch(failedPopularFeed);
+}
+}
+)
+
+    
+
+
 

@@ -1,14 +1,18 @@
 // import { combineReducers, useStore} from 'react-redux';
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import {popularFeedSlice} from './popularFeedSlice';
-import {redditSlice} from './redditSlice';
+import {  configureStore,combineReducers } from '@reduxjs/toolkit';
+import popularFeedReducer from './popularFeedSlice';
+import redditSliceReducer from './redditSlice';
 
+import { applyMiddleware } from '@reduxjs/toolkit';
+// import { composeWithDevTools } from '@redux-devtools/extension';
 
-
+//const composedEnhancer = composeWithDevTools({
+ 
 export default configureStore({
-  reducer : combineReducers({
-    reddit: redditSlice.reducer,
-    popularFeed: popularFeedSlice.reducer,
+  reducer:combineReducers({
+    reddit: redditSliceReducer,
+    popular_feed: popularFeedReducer,
   }),
 });
+
 
