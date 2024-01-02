@@ -83,8 +83,8 @@ export const fetchRedditPost = (subreddit) => async (dispatch) =>{
             loadingComments: false,
             errorComments: false,
         }));
-        dispatch(getPostFailure())
-
+        
+        dispatch(getPostSuccess(postsWithMetaData))
     } catch (error) {
         dispatch(getPostFailure());
     }

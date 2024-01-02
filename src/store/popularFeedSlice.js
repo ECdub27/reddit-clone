@@ -24,10 +24,12 @@ const popularFeedSlice = createSlice({
             state.isLoading = false;
             state.error = true;
         },
+        
     },
 
 });
 
+const selectPopularFeed = state => state.reddit.popularFeed;
 
 export const {startGetPopularFeed, getPopularFeedSuccess , failedPopularFeed} = popularFeedSlice.actions;
 export default popularFeedSlice.reducer;
@@ -36,8 +38,13 @@ export const fetchPopularFeed = createAsyncThunk('PopularFeed/fetchpopular', asy
 try {
 dispatch(startGetPopularFeed);
 const redditFeed = await getPopularFeedSuccess;
+const popularFeedWithMetaData = popularFeed.map((popularFeed) => ({
+    ...popularFeed,
+    isLoading: false,
+    error: false,
+}));
 if(redditFeed){
-    dispatch(getPopularFeedSuccess);
+    dispatch(getPopularFeedSuccess(popularFeedWithMetaData));
 }
 } catch (error){
 dispatch(failedPopularFeed);

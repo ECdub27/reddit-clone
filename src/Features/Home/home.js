@@ -7,6 +7,7 @@ getPostSuccess} from '../../store/redditSlice';
 import Post from '../Posts/posts';
 import { fetchPopularFeed } from '../../store/popularFeedSlice';
 
+
 const Home = ( ) =>{
 const reddit =  useSelector((state) => state.reddit);
 const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const {error, isLoading, searchTerm, selectedSubreddit} = reddit;
 
 useEffect(() => {
 
-    dispatch(fetchPopularFeed(selectedSubreddit))
+    dispatch(fetchRedditPost(selectedSubreddit));
 
 }, [selectedSubreddit]);
 
@@ -40,7 +41,7 @@ return (
 if(posts === 0){
     return (
         <div>
-            <h2>Post Failed to Load {searchTerm}</h2>
+            <h2>Post Failed to Load "{searchTerm}" </h2>
             <button type='button' onClick={() => dispatch(setSearchTerm(''))}>Go Home</button>
         </div>
     )
