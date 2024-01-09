@@ -1,9 +1,9 @@
 
 
-export const redditRoot = 'https.//reddit.com';
+export const redditRoot = 'https://reddit.com';
 
-export const popularFeed = async (popluar) =>{
-    const response =  await fetch(`${redditRoot}/r/${popluar}.json`);
+export const popularFeed = async (popular) =>{
+    const response =  await fetch(`${redditRoot}/r/${popular}.json`);
     const json = await response.json();
     return json.data.children.map((post) => post.data);
 }
@@ -13,7 +13,7 @@ export const getSubRedditPost =  async (subreddits) =>{
     return json.data.children.map((post) => post.data);
 }
 export const getSubreddit = async () =>{
-    const response = await fetch(`${redditRoot}/r/subreddit.json`);
+    const response = await fetch(`${redditRoot}/r/subreddits.json`);
     const json = await response.json();
     return json.data.children.map((subreddit) => subreddit.data)
 }

@@ -32,7 +32,7 @@ if(error){
 return (
     <div>
         <h2 className='error-heading'>Post Failed to Load {selectedSubreddit}</h2>
-        <button type='button' onClick={() => dispatch(fetchRedditPost(selectedSubreddit))}>Go Home</button>
+        <button type='button' onClick={async() => dispatch(fetchRedditPost(selectedSubreddit))}>Go Home</button>
     </div>
 )
 }
@@ -42,7 +42,7 @@ if(posts === 0){
     return (
         <div>
             <h2>Post Failed to Load "{searchTerm}" </h2>
-            <button type='button' onClick={() => dispatch(setSearchTerm(''))}>Go Home</button>
+            <button type='button' onClick={async() => dispatch(setSearchTerm(''))}>Go Home</button>
         </div>
     )
 }
