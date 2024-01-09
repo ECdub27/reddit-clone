@@ -20,7 +20,7 @@ useEffect(() =>{
 
 const handleSearchSubmit = (e) =>{
     e.preventDefault();
-    dispatch(() => setSearchTermLocal(searchTermLocal))
+    dispatch( setSearchTermLocal(searchTermLocal))
 }
 return (
    <header>
