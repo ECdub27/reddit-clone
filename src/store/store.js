@@ -9,6 +9,14 @@ import { applyMiddleware } from '@reduxjs/toolkit';
 //const composedEnhancer = composeWithDevTools({
  
 export default configureStore({
+reducer:combineReducers({
+  reddit: redditSliceReducer,
+    popular_feed: popularFeedReducer,
+    subreddits: subredditSliceReducer,
+}),
+
+});
+{/*export default configureStore({
   reducer:combineReducers({
     reddit: redditSliceReducer,
     popular_feed: popularFeedReducer,
@@ -16,4 +24,4 @@ export default configureStore({
   }),
 });
 
-
+*/}

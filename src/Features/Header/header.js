@@ -5,20 +5,20 @@ import { setSearchTerm } from '../../store/redditSlice';
 const Header = () =>{
 const [searchTermLocal, setSearchTermLocal] = useState('');
 const dispatch =  useDispatch();
-const selectSearchTerm =  useSelector((state) => state.reddit.setSearchTerm);
+const searchTerm =  useSelector((state) => state.reddit.searchTerm);
 
 
-const handleSearch = e =>{
+const onSearchTermChange = (e) =>{
     setSearchTermLocal(e.target.value);
 }
 
 useEffect(() =>{
-    setSearchTerm(selectSearchTerm);
+   setSearchTerm(searchTerm);
 
-}, [selectSearchTerm])
+}, [searchTerm])
 
 
-const handleSearchSubmit = (e) =>{
+const onHandleSearchSubmit = (e) =>{
     e.preventDefault();
     dispatch( setSearchTermLocal(searchTermLocal))
 }
@@ -28,15 +28,15 @@ return (
         {/* icon here */}
         <p>Reddit Clone &#128588;&#127998; </p>
         </div>
-        <form className='form' onSearch={handleSearchSubmit}>
+        <form className='search' onSubmit={onHandleSearchSubmit}>
             <input
             type='text'
             aria-label='search term'
             placeholder='Find fave subreddit'
             value={searchTermLocal}
-            onChange={handleSearch}/>
+            onChange={onHandleSearchSubmit}/>
         </form>
-        <button type='submit' onClick={handleSearchSubmit}>Search</button>
+        <button type='submit' onClick={onHandleSearchSubmit}>Search</button>
    
    </header>
 );

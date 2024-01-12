@@ -72,7 +72,7 @@ getCommentsFailure} = redditSlice.actions;
 
 export default redditSlice.reducer;
 
-export const fetchRedditPost = (subreddit) => async (dispatch) =>{
+export const fetchRedditPost = createAsyncThunk((subreddit) => async (dispatch) =>{
     try {
         dispatch(startGetPosts());
         const posts = await getSubRedditPost(subreddit);
@@ -88,7 +88,7 @@ export const fetchRedditPost = (subreddit) => async (dispatch) =>{
     } catch (error) {
         dispatch(getPostFailure());
     }
-};
+});
 
 export const fetchComments = createAsyncThunk((permalink, index) => async (dispatch) =>{
   try {
