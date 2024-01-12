@@ -1,22 +1,26 @@
 import React, {useEffect} from 'react';
-import { UseSelector, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Card } from '@mui/material';
 import { setSelectedSubreddit, selectSelectedSubreddit } from '../../store/redditSlice';
-import { fetchSubreddits, selectSubreddits} from '../../store/subredditSlice';
+import { getSubredditsStatus,fetchSubreddits, selectSubreddits } from '../../store/subredditSlice';
+import { getSubreddit } from '../../api/api';
+
 
 function Subreddits(){
 const dispatch = useDispatch();
 const subReddits = useSelector(selectSubreddits);
 const selectedSubreddit = useSelector(selectSelectedSubreddit);
-
+const subredditStatus = useSelector(getSubredditsStatus);
 
 useEffect(() =>{
-
-dispatch(fetchSubreddits());
-},[dispatch]);
+if(subredditStatus === 'loading'){
+dispatch(fetchSubreddits(selectedSubreddit));
+}
+},[subredditStatus,dispatch]);
 
 return (
  <div>
+  
 <Card className='subreddit-Card'>
 <h2>Subreddits</h2>
 <ul>Feed
@@ -33,15 +37,17 @@ return (
         />
         {subreddit.display_name}
         </button> 
-
+       
         
         </li>
+    
     ))}
 </ul>
 
 
 
 </Card>
+
 </div>
 
 );

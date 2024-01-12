@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Post from '../Posts/posts';
 import { fetchRedditPost,setSearchTerm, fetchComments, selectFilteredPost } from '../../store/redditSlice';
-
+import Subreddits from '../Subreddits/subreddits';
 import { fetchPopularFeed } from '../../store/popularFeedSlice';
 
 
@@ -16,7 +16,7 @@ useEffect(() => {
 
     dispatch(fetchRedditPost(selectedSubreddit));
 
-}, [selectedSubreddit]);
+}, [selectedSubreddit,dispatch]);
 
 
 const onToggleComments = (index) =>{
@@ -49,11 +49,13 @@ if(posts === 0){
 return (
     <div>
         <h2>Posts</h2>
+       
         {posts.map((post, index) => (
             <Post key={post.id}
             post={post}
             onToggleComment={onToggleComments(index)}/>
         ))}
+        
     </div>
 );
 };

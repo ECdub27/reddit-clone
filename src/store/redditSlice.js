@@ -6,7 +6,7 @@ const initialState = {
     posts :[],
     isLoading: false,
     error: false,
-    setSearchTerm: '',
+    searchTerm: '',
     selectedReddit: 'r/premierleague'
 }
 const redditSlice = createSlice({
@@ -32,11 +32,11 @@ const redditSlice = createSlice({
 
    },
    setSearchTerm(state,action){
-    state.setSearchTerm = action.payload;
+    state.searchTerm = action.payload;
 
    },
    setSelectedSubreddit(state,action){
-    state.setSearchTerm = '';
+    state.searchTerm = '';
     state.selectedReddit = action.payload;
    },
    toggleShowComment(state,action){
@@ -72,37 +72,37 @@ getCommentsFailure} = redditSlice.actions;
 
 export default redditSlice.reducer;
 
-export const fetchRedditPost = createAsyncThunk((subreddit) => async (dispatch) =>{
+export const fetchRedditPost = (subreddit) => async (dispatch) =>{
     try {
         dispatch(startGetPosts());
         const posts = await getSubRedditPost(subreddit);
         const postsWithMetaData = posts.map((post) => ({
-            ...posts,
+            ...post,
             showingComments: false,
             comments: [],
             loadingComments: false,
             errorComments: false,
         }));
         
-        dispatch(getPostSuccess(postsWithMetaData))
+        dispatch(getPostSuccess(postsWithMetaData));
     } catch (error) {
         dispatch(getPostFailure());
     }
-});
+};
 
-export const fetchComments = createAsyncThunk((permalink, index) => async (dispatch) =>{
+export const fetchComments = (permalink, index) => async (dispatch) =>{
   try {
     dispatch(startGetComments(index));
     const comments = await getComments(permalink);
     dispatch(getCommentsSuccess({index, comments}));
 
   } catch (error) {
-    dispatch(getCommentsFailure());
+    dispatch(getCommentsFailure(index));
   }
-})
+};
 
 const selectPosts = (state) => state.reddit.posts;
-const selectSearchTerm = (state) => state.reddit.setSearchTerm;
+const selectSearchTerm = (state) => state.reddit.searchTerm;
 
 export const selectSelectedSubreddit = (state) => state.reddit.selectedReddit;
 
