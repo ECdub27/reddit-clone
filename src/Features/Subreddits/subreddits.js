@@ -16,6 +16,12 @@ useEffect(() =>{
 if(subredditStatus === 'loading'){
 dispatch(fetchSubreddits(selectedSubreddit));
 }
+const fetchResource = async () => {
+  const response = await fetch( 'https://www.reddit.com/subreddits.json');
+  const responseVal = await response.text();
+  console.log(responseVal);
+};
+fetchResource();
 },[subredditStatus,dispatch]);
 
 return (
